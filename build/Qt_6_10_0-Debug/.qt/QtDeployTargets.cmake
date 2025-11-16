@@ -1,2 +1,0 @@
-set(__QT_DEPLOY_TARGET_Spacecraft_Telemetry_Vizualizer_FILE /home/andrzej/Documents/projects/Spacecraft_Telemetry_Visualizer/Spacecraft_Telemetry_Vizualizer/build/Qt_6_10_0-Debug/Spacecraft_Telemetry_Vizualizer)
-set(__QT_DEPLOY_TARGET_Spacecraft_Telemetry_Vizualizer_TYPE EXECUTABLE)
