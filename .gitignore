@@ -1,5 +1,5 @@
 # Build artifacts
-build/
+build/*
 cmake-build-*/
 CMakeFiles/
 CMakeCache.txt
@@ -31,6 +31,7 @@ ui_*.h
 *.qbs.user.*
 *.qmlproject.user
 *.qmlproject.user.*
+*.qtcreator/
 
 # CLion / JetBrains
 .idea/
