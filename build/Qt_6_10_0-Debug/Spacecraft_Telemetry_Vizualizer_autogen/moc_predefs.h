@@ -1,4 +1,5 @@
 #define __DBL_MIN_EXP__ (-1021)
+#define H5_BUILT_AS_DYNAMIC_LIB 1
 #define __cpp_nontype_template_parameter_auto 201606L
 #define __UINT_LEAST16_MAX__ 0xffff
 #define __FLT16_HAS_QUIET_NAN__ 1
@@ -118,6 +119,7 @@
 #define __gnu_linux__ 1
 #define __INT16_MAX__ 0x7fff
 #define __FLT64_MIN_EXP__ (-1021)
+#define vtkRenderingCore_AUTOINIT_INCLUDE "/home/andrzej/Documents/projects/Spacecraft_Telemetry_Visualizer/Spacecraft_Telemetry_Vizualizer/build/Qt_6_10_0-Debug/CMakeFiles/vtkModuleAutoInit_220c1d97314e76520b30c6e34d0dff76.h"
 #define __FLT64X_MIN_10_EXP__ (-4931)
 #define __LDBL_HAS_QUIET_NAN__ 1
 #define __cpp_return_type_deduction 201304L
@@ -164,6 +166,7 @@
 #define __WCHAR_WIDTH__ 32
 #define __FLT32_MAX__ 3.40282346638528859811704183484516925e+38F32
 #define __DEC128_EPSILON__ 1E-33DL
+#define vtkRenderingOpenGL2_AUTOINIT_INCLUDE "/home/andrzej/Documents/projects/Spacecraft_Telemetry_Visualizer/Spacecraft_Telemetry_Vizualizer/build/Qt_6_10_0-Debug/CMakeFiles/vtkModuleAutoInit_220c1d97314e76520b30c6e34d0dff76.h"
 #define __FLT16_DECIMAL_DIG__ 5
 #define __SSE2_MATH__ 1
 #define __ATOMIC_HLE_RELEASE 131072
@@ -173,6 +176,7 @@
 #define __GNUG__ 13
 #define __LONG_LONG_MAX__ 0x7fffffffffffffffLL
 #define __SIZEOF_SIZE_T__ 8
+#define vtkIOExport_AUTOINIT_INCLUDE "/home/andrzej/Documents/projects/Spacecraft_Telemetry_Visualizer/Spacecraft_Telemetry_Vizualizer/build/Qt_6_10_0-Debug/CMakeFiles/vtkModuleAutoInit_220c1d97314e76520b30c6e34d0dff76.h"
 #define __BFLT16_HAS_INFINITY__ 1
 #define __FLT64X_MIN_EXP__ (-16381)
 #define __SIZEOF_WINT_T__ 4
@@ -183,6 +187,7 @@
 #define ABI_ID "ELF"
 #define __cpp_hex_float 201603L
 #define __GXX_ABI_VERSION 1018
+#define kiss_fft_scalar double
 #define __FLT_MIN_EXP__ (-125)
 #define __GCC_HAVE_DWARF2_CFI_ASM 1
 #define __x86_64 1
@@ -201,6 +206,7 @@
 #define __FLT32X_EPSILON__ 2.22044604925031308084726333618164062e-16F32x
 #define __LDBL_MAX_EXP__ 16384
 #define __DECIMAL_BID_FORMAT__ 1
+#define vtkDomainsChemistry_AUTOINIT_INCLUDE "/home/andrzej/Documents/projects/Spacecraft_Telemetry_Visualizer/Spacecraft_Telemetry_Vizualizer/build/Qt_6_10_0-Debug/CMakeFiles/vtkModuleAutoInit_220c1d97314e76520b30c6e34d0dff76.h"
 #define __FLT64_MIN_10_EXP__ (-307)
 #define __FLT16_MIN_10_EXP__ (-4)
 #define __FLT64X_DECIMAL_DIG__ 21
@@ -217,8 +223,10 @@
 #define __LDBL_DECIMAL_DIG__ 21
 #define __VERSION__ "13.3.0"
 #define __UINT64_C(c) c ## UL
+#define vtkRenderingContext2D_AUTOINIT_INCLUDE "/home/andrzej/Documents/projects/Spacecraft_Telemetry_Visualizer/Spacecraft_Telemetry_Vizualizer/build/Qt_6_10_0-Debug/CMakeFiles/vtkModuleAutoInit_220c1d97314e76520b30c6e34d0dff76.h"
 #define __cpp_unicode_characters 201411L
 #define _STDC_PREDEF_H 1
+#define GLAD_API_CALL_EXPORT 1
 #define __INT_LEAST32_MAX__ 0x7fffffff
 #define __GCC_ATOMIC_INT_LOCK_FREE 2
 #define __FLT128_MAX_EXP__ 16384
@@ -228,6 +236,7 @@
 #define __FLT32X_MIN_EXP__ (-1021)
 #define __STDC_IEC_60559_COMPLEX__ 201404L
 #define __cpp_aggregate_bases 201603L
+#define DIY_HAS_MPI 0
 #define __BFLT16_MIN__ 1.17549435082228750796873653722224568e-38BF16
 #define __FLT128_HAS_DENORM__ 1
 #define __FLT32_DECIMAL_DIG__ 9
@@ -322,7 +331,9 @@
 #define __LDBL_MANT_DIG__ 64
 #define __cpp_range_based_for 201603L
 #define __INT_FAST16_WIDTH__ 64
+#define FMT_SHARED 1
 #define __FLT64_HAS_INFINITY__ 1
+#define DIY_NO_THREADS 1
 #define __FLT64X_MAX__ 1.18973149535723176502126385303097021e+4932F64x
 #define __FLT16_HAS_INFINITY__ 1
 #define __STDCPP_DEFAULT_NEW_ALIGNMENT__ 16
@@ -392,6 +403,7 @@
 #define __BFLT16_HAS_DENORM__ 1
 #define __GNUC_STDC_INLINE__ 1
 #define __FLT64_HAS_DENORM__ 1
+#define vtkRenderingVolume_AUTOINIT_INCLUDE "/home/andrzej/Documents/projects/Spacecraft_Telemetry_Visualizer/Spacecraft_Telemetry_Vizualizer/build/Qt_6_10_0-Debug/CMakeFiles/vtkModuleAutoInit_220c1d97314e76520b30c6e34d0dff76.h"
 #define __FLT32_EPSILON__ 1.19209289550781250000000000000000000e-7F32
 #define __FLT16_HAS_DENORM__ 1
 #define __DBL_DECIMAL_DIG__ 17
@@ -410,6 +422,7 @@
 #define ARCHITECTURE_ID "x86_64"
 #define __cpp_alias_templates 200704L
 #define __FLT_DENORM_MIN__ 1.40129846432481707092372958328991613e-45F
+#define VTK_HAS_OGGTHEORA_SUPPORT 1
 #define __FLT128_IS_IEC_60559__ 1
 #define __INT8_MAX__ 0x7f
 #define __LONG_WIDTH__ 64
@@ -425,6 +438,7 @@
 #define __cpp_deduction_guides 201703L
 #define __BFLT16_NORM_MAX__ 3.38953138925153547590470800371487867e+38BF16
 #define __INT32_TYPE__ int
+#define vtkIOExportGL2PS_AUTOINIT_INCLUDE "/home/andrzej/Documents/projects/Spacecraft_Telemetry_Visualizer/Spacecraft_Telemetry_Vizualizer/build/Qt_6_10_0-Debug/CMakeFiles/vtkModuleAutoInit_220c1d97314e76520b30c6e34d0dff76.h"
 #define __SIZEOF_DOUBLE__ 8
 #define __cpp_exceptions 199711L
 #define __FLT_MIN_10_EXP__ (-37)
@@ -445,6 +459,7 @@
 #define __INT16_C(c) c
 #define __STDC__ 1
 #define __PTRDIFF_TYPE__ long int
+#define vtkFiltersCore_AUTOINIT_INCLUDE "/home/andrzej/Documents/projects/Spacecraft_Telemetry_Visualizer/Spacecraft_Telemetry_Vizualizer/build/Qt_6_10_0-Debug/CMakeFiles/vtkModuleAutoInit_220c1d97314e76520b30c6e34d0dff76.h"
 #define __FLT32X_MIN_10_EXP__ (-307)
 #define __UINTPTR_TYPE__ long unsigned int
 #define __DEC64_SUBNORMAL_MIN__ 0.000000000000001E-383DD

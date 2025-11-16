@@ -54,7 +54,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/Spacecraft_Telemetry_Vizualizer")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/Spacecraft_Telemetry_Vizualizer"
-         OLD_RPATH "/home/andrzej/Qt/6.10.0/gcc_64/lib:"
+         OLD_RPATH "/home/andrzej/Qt/6.10.0/gcc_64/lib:/home/andrzej/VTK/VTK-9.5.2-install/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/Spacecraft_Telemetry_Vizualizer")
