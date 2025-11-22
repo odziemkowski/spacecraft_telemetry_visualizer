@@ -1,0 +1,83 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a2332;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0d1117;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="satelliteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="orbitGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.3" />
+      <stop offset="50%" style="stop-color:#10b981;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.3" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <circle cx="100" cy="100" r="95" fill="url(#bgGradient)"/>
+  
+  <!-- Stars in background -->
+  <circle cx="40" cy="40" r="1.5" fill="#ffffff" opacity="0.8"/>
+  <circle cx="160" cy="50" r="1" fill="#ffffff" opacity="0.6"/>
+  <circle cx="170" cy="140" r="1.5" fill="#ffffff" opacity="0.7"/>
+  <circle cx="30" cy="150" r="1" fill="#ffffff" opacity="0.5"/>
+  <circle cx="150" cy="30" r="1.2" fill="#ffffff" opacity="0.9"/>
+  
+  <!-- Orbital path -->
+  <ellipse cx="100" cy="100" rx="55" ry="55" fill="none" stroke="url(#orbitGradient)" stroke-width="2" opacity="0.6" stroke-dasharray="5,5"/>
+  
+  <!-- Data signal waves -->
+  <path d="M 100 100 Q 80 80, 60 70" fill="none" stroke="#10b981" stroke-width="1.5" opacity="0.5"/>
+  <path d="M 100 100 Q 120 80, 140 70" fill="none" stroke="#10b981" stroke-width="1.5" opacity="0.5"/>
+  <path d="M 100 100 Q 80 120, 60 130" fill="none" stroke="#10b981" stroke-width="1.5" opacity="0.5"/>
+  
+  <!-- Telemetry data points -->
+  <circle cx="60" cy="70" r="2.5" fill="#10b981" opacity="0.8"/>
+  <circle cx="140" cy="70" r="2.5" fill="#10b981" opacity="0.8"/>
+  <circle cx="60" cy="130" r="2.5" fill="#10b981" opacity="0.8"/>
+  
+  <!-- Satellite body (main rectangle) -->
+  <rect x="85" y="90" width="30" height="20" fill="url(#satelliteGradient)" rx="2"/>
+  
+  <!-- Satellite solar panels -->
+  <rect x="60" y="92" width="22" height="16" fill="#fbbf24" opacity="0.9" rx="1"/>
+  <rect x="118" y="92" width="22" height="16" fill="#fbbf24" opacity="0.9" rx="1"/>
+  
+  <!-- Solar panel grid lines -->
+  <line x1="67" y1="92" x2="67" y2="108" stroke="#f59e0b" stroke-width="0.5"/>
+  <line x1="75" y1="92" x2="75" y2="108" stroke="#f59e0b" stroke-width="0.5"/>
+  <line x1="125" y1="92" x2="125" y2="108" stroke="#f59e0b" stroke-width="0.5"/>
+  <line x1="133" y1="92" x2="133" y2="108" stroke="#f59e0b" stroke-width="0.5"/>
+  
+  <!-- Satellite antenna -->
+  <line x1="100" y1="90" x2="100" y2="75" stroke="#60a5fa" stroke-width="2"/>
+  <circle cx="100" cy="73" r="3" fill="#3b82f6"/>
+  
+  <!-- Signal emanating from antenna -->
+  <circle cx="100" cy="73" r="8" fill="none" stroke="#10b981" stroke-width="1" opacity="0.4"/>
+  <circle cx="100" cy="73" r="14" fill="none" stroke="#10b981" stroke-width="1" opacity="0.2"/>
+  
+  <!-- Earth (prominent) -->
+  <defs>
+    <radialGradient id="earthGradient">
+      <stop offset="0%" style="stop-color:#4f9eff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e40af;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="145" r="28" fill="url(#earthGradient)"/>
+  <!-- Continents -->
+  <path d="M 90 135 Q 95 132, 100 133 Q 105 134, 108 138 Q 106 142, 102 143 Q 98 142, 95 140 Q 92 138, 90 135 Z" fill="#10b981" opacity="0.8"/>
+  <path d="M 110 145 Q 115 143, 120 146 Q 122 150, 118 155 Q 114 156, 110 153 Q 108 150, 110 145 Z" fill="#10b981" opacity="0.8"/>
+  <ellipse cx="85" cy="150" rx="6" ry="10" fill="#10b981" opacity="0.7" transform="rotate(-20 85 150)"/>
+  <!-- Clouds -->
+  <ellipse cx="95" cy="148" rx="4" ry="2" fill="#ffffff" opacity="0.4"/>
+  <ellipse cx="112" cy="140" rx="3" ry="2" fill="#ffffff" opacity="0.3"/>
+  <!-- Earth highlight -->
+  <ellipse cx="92" cy="138" rx="8" ry="6" fill="#ffffff" opacity="0.15"/>
+  
+  <!-- Border -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#1f2937" stroke-width="2"/>
+</svg>

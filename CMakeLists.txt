@@ -16,8 +16,15 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 # Find VTK
 # If VTK is not in a standard location, set VTK_DIR before running cmake:
 # cmake -DVTK_DIR=/path/to/VTK/build ..
-set(VTK_DIR "/home/andrzej/VTK/VTK-9.5.2-install/lib/cmake/vtk-9.5")
-find_package(VTK REQUIRED)
+#set(VTK_DIR "/home/andrzej/VTK/VTK-9.5.2/vtk-build-qt/lib/cmake/vtk-9.5")
+find_package(VTK REQUIRED COMPONENTS
+  CommonCore
+  CommonDataModel
+  FiltersSources
+  RenderingCore
+  RenderingOpenGL2
+  GUISupportQt
+)
 
 
 # Optional: Print VTK version for verification
@@ -28,6 +35,7 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+    icons/icons.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

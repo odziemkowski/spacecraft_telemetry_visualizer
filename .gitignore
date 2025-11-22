@@ -31,7 +31,8 @@ ui_*.h
 *.qbs.user.*
 *.qmlproject.user
 *.qmlproject.user.*
-*.qtcreator/
+*.qtcreator/*
+.qtcreator/
 
 # CLion / JetBrains
 .idea/
@@ -54,3 +55,5 @@ Thumbs.db
 CMakeLists.txt.user
 CMakeUserPresets.json
 
+# VS Code
+.vscode/
