@@ -6,10 +6,12 @@
 #include <vtkSmartPointer.h>
 #include <vtkRenderer.h>
 #include <vtkGenericOpenGLRenderWindow.h>
+class vtkOrientationMarkerWidget;
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
+namespace Ui
+{
+    class MainWindow;
 }
 QT_END_NAMESPACE
 
@@ -26,6 +28,7 @@ private:
     QVTKOpenGLNativeWidget *vtkWidget;
     vtkSmartPointer<vtkRenderer> renderer;
     vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;
+    vtkSmartPointer<vtkOrientationMarkerWidget> orientationWidget;
 
     void setupVTK();
 };

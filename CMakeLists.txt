@@ -21,9 +21,12 @@ find_package(VTK REQUIRED COMPONENTS
   CommonCore
   CommonDataModel
   FiltersSources
+  IOGeometry
   RenderingCore
   RenderingOpenGL2
   GUISupportQt
+  InteractionStyle
+  RenderingAnnotation
 )
 
 
@@ -65,6 +68,14 @@ target_link_libraries(Spacecraft_Telemetry_Vizualizer PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(
     TARGETS Spacecraft_Telemetry_Vizualizer
     MODULES ${VTK_LIBRARIES}
+)
+
+# Copy project `models/` directory into the build output so runtime can find
+# models/satellite.obj when the executable is run from the build tree.
+# NOTE: is there a more elegant way to do it?
+add_custom_command(TARGET Spacecraft_Telemetry_Vizualizer POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/models"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/models" "${CMAKE_BINARY_DIR}/models"
 )
 
 if(${QT_VERSION} VERSION_LESS 6.1.0)
