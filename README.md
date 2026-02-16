@@ -1,6 +1,38 @@
 # spacecraft_telemetry_visualizer
 
-## Troubleshooting: orientation marker / triad and GL errors
+## Prerequisites
+
+- CMake 4.2.0-rc3
+- ninja 1.11.1
+- Qt6
+- VTK 9.5.2
+
+## Build instructions
+
+Release build
+```
+cd <main_project_dir_path_here>
+mkdir -p build
+cd build
+cmake -G Ninja ..
+ninja
+```
+
+Debug build
+```
+cd <main_project_dir_path_here>
+mkdir -p build
+cd build
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug ..
+ninja
+```
+
+## Run instructions
+```
+./Spacecraft_Telemetry_Vizualizer
+```
+
+### Troubleshooting: orientation marker / triad and GL errors
 
 If you added an orientation triad (axes) and are seeing frequent OpenGL errors like:
 

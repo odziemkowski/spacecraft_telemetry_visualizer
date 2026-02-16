@@ -10,13 +10,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Find Qt
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+set(Qt6_DIR "/home/andrzej/Qt/6.10.0/gcc_64/lib/cmake/Qt6")
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 # Find VTK
 # If VTK is not in a standard location, set VTK_DIR before running cmake:
 # cmake -DVTK_DIR=/path/to/VTK/build ..
-#set(VTK_DIR "/home/andrzej/VTK/VTK-9.5.2/vtk-build-qt/lib/cmake/vtk-9.5")
+set(VTK_DIR "/home/andrzej/VTK/VTK-9.5.2/vtk-build-qt/lib/cmake/vtk-9.5")
 find_package(VTK REQUIRED COMPONENTS
   CommonCore
   CommonDataModel
@@ -41,25 +41,13 @@ set(PROJECT_SOURCES
     icons/icons.qrc
 )
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(Spacecraft_Telemetry_Vizualizer
+qt_add_executable(Spacecraft_Telemetry_Vizualizer
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
-else()
-    if(ANDROID)
-        add_library(Spacecraft_Telemetry_Vizualizer SHARED
-            ${PROJECT_SOURCES}
-        )
-    else()
-        add_executable(Spacecraft_Telemetry_Vizualizer
-            ${PROJECT_SOURCES}
-        )
-    endif()
-endif()
 
 # Link Qt libraries
-target_link_libraries(Spacecraft_Telemetry_Vizualizer PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(Spacecraft_Telemetry_Vizualizer PRIVATE Qt6::Widgets)
 
 # Link VTK libraries
 target_link_libraries(Spacecraft_Telemetry_Vizualizer PRIVATE ${VTK_LIBRARIES})
@@ -78,9 +66,6 @@ add_custom_command(TARGET Spacecraft_Telemetry_Vizualizer POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/models" "${CMAKE_BINARY_DIR}/models"
 )
 
-if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.Spacecraft_Telemetry_Vizualizer)
-endif()
 set_target_properties(Spacecraft_Telemetry_Vizualizer PROPERTIES
     ${BUNDLE_ID_OPTION}
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
