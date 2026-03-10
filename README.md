@@ -9,16 +9,6 @@
 
 ## Build instructions
 
-Release build
-```
-cd <main_project_dir_path_here>
-mkdir -p build
-cd build
-cmake -G Ninja ..
-ninja
-```
-
-Debug build
 ```
 cd <main_project_dir_path_here>
 mkdir -p build
