@@ -1,568 +1,308 @@
+# Spacecraft Telemetry Visualizer — Engineering Roadmap
 
 ---
 
-# The 2-Week MVP Plan (Absolutely Achievable)
+## Current State
 
-## Week 1: Core Visualization (Visible Progress Immediately)
-
-**Goal:** Display a 3D spacecraft model and rotate it
-
----
-
-### Day 1 (2 hours) – Saturday morning
-
-* Create GitHub repo
-* Set up Qt + VTK project (`CMakeLists.txt`)
-* Display empty VTK window in Qt
-
-**Deliverable:** Window opens successfully
-**Commit:** `"Initial project setup"`
+- **Stack:** C++20, Qt 6.10, VTK 9.5.2, CMake + Ninja, Linux
+- **Working:** Qt + VTK rendering pipeline integrated, `QVTKOpenGLNativeWidget` embedded in `QMainWindow`
+- **Working:** Satellite OBJ model loaded and displayed in 3D scene, orientation marker (axes triad) in viewport corner
+- **Working:** Roll / Pitch / Yaw sliders drive real-time orientation updates
+- **Module layout defined:** `app/`, `gui/`, `rendering/`, `core/`, `math/`, `simulation/`, `tests/` — placeholder directories present
+- **Not yet built:** Math library, orbital mechanics, telemetry engine, concurrency, simulation, testing, CI
 
 ---
 
-### Day 2 (2 hours)
+## Phase 1 — MVP: 3D Viewer with Manual Controls ✅
 
-* Load a simple 3D model (cube or sphere)
-* Display in VTK window
-* Add basic mouse rotation
+**Goal:** Prove the Qt + VTK stack works and produce something visually meaningful.
 
-**Deliverable:** You can see and rotate 3D object
-**Commit:** `"Add 3D model display"`
+**Tasks:**
+- Set up CMake project with Qt6 and VTK
+- Embed `QVTKOpenGLNativeWidget` inside `QMainWindow`
+- Load satellite OBJ model; fallback to sphere if missing
+- Add orientation marker (XYZ triad) in viewport corner
+- Wire Roll / Pitch / Yaw sliders to `SceneManager::updateOrientation()`
 
----
-
-### Day 3–4 (1 hour each)
-
-* Find/create simple satellite 3D model (OBJ file)
-* Load and display satellite
-* Add axes (X, Y, Z)
-
-**Deliverable:** Satellite visible with orientation axes
-**Commit:** `"Add satellite model"`
+**Deliverables:**
+- Satellite visible and rotatable in 3D
+- Sliders drive orientation in real time
+- Clean build, project on GitHub
 
 ---
 
-### Day 5 (2 hours)
+## Phase 2 — Architecture: Clean Module Boundaries
 
-* Add simple UI with Qt (sliders or buttons)
-* Control satellite rotation with UI
+**Goal:** Refactor the MVP into a modular structure with enforced separation of concerns and modern C++ ownership semantics throughout.
 
-**Deliverable:** Interactive satellite rotation
-**Commit:** `"Add UI controls"`
+**Tasks:**
+- Establish hard module boundaries: `core` has no Qt/VTK dependency, `math` has no UI dependency, `rendering` does not call into `simulation`
+- Replace remaining raw pointers with `std::unique_ptr` / `std::shared_ptr` where ownership is shared
+- Audit `const` correctness across all existing interfaces
+- Split `CMakeLists.txt` into per-module targets linked together at the top level
+- Update `README.md` with an architecture diagram showing module dependency graph
 
----
+**Deliverables:**
+- Each module compiles independently as a CMake target
+- No cross-layer includes violating the dependency rules
+- Architecture diagram in `README.md`
 
-## Weekend 1 End
-
-* ✅ You have a working 3D satellite viewer
-* ✅ It's on GitHub
-* ✅ It looks cool (screenshot-worthy)
-* ✅ Momentum established
-
----
-
-# Week 2: Add Real Data (Make It Functional)
-
-**Goal:** Read telemetry data and update visualization
+**Stretch:**
+- Add a `CONTRIBUTING.md` that codifies the boundary rules
 
 ---
 
-### Day 6–7 (2 hours each)
+## Phase 3 — Math Module: Vector3 and Quaternion
 
-* Create sample telemetry CSV file (attitude, position, temperature, etc.)
-* Parse CSV data in C++
+**Goal:** Build a self-contained, well-tested math library that underpins all later work. No external math dependencies.
 
-**Deliverable:** Program reads telemetry file
-**Commit:** `"Add telemetry parsing"`
+**Tasks:**
+- Implement `Vector3`: addition, subtraction, scalar multiply, dot product, cross product, norm, normalize
+- Implement `Quaternion`: construction, normalization, multiplication, conjugate, rotate-vector, to-rotation-matrix
+- Apply `constexpr` throughout where the compiler permits
+- Use `explicit` constructors; value semantics only; zero dynamic allocation
+- Write unit tests for all operations including edge cases (zero vector, identity quaternion, gimbal-adjacent inputs)
 
----
+**Deliverables:**
+- `math/src/Vector3.h`, `math/src/Quaternion.h` — header-only or minimal `.cpp`
+- Test suite passes: all vector and quaternion operations verified
+- `math` module has zero dependency on Qt, VTK, or any other module
 
-### Day 8–9 (2 hours each)
-
-* Update satellite orientation from telemetry data
-* Add "playback" – step through telemetry timeline
-
-**Deliverable:** Satellite moves according to data
-**Commit:** `"Implement telemetry playback"`
-
----
-
-### Day 10 (2 hours)
-
-* Add simple telemetry display (text showing current values)
-* Polish UI
-* Take screenshots/video
-
-**Deliverable:** Demo-ready project
-**Commit:** `"Add telemetry display UI"`
-
-
-Absolutely. Below is a **realistic 3-month roadmap** designed for:
-
-* ✅ Someone with solid programming skills
-* ✅ Limited system design & multithreading experience
-* ✅ Desire to grow into strong modern C++
-* ✅ Aerospace flavor without pigeonholing
-* ✅ Fun + visible progress
-* ✅ Portfolio-ready result
-
-It is structured for **~6–8 hours per week** (adjust pace as needed).
-
-You can paste this directly into GitHub.
+**Stretch:**
+- Implement SLERP (spherical linear interpolation) — required for telemetry interpolation in Phase 6
 
 ---
 
-# 🛰 Satellite Telemetry & Simulation Workbench
+## Phase 4 — Solar System Scene: Earth and ECI Frame
 
-### 3-Month Engineering Roadmap
+**Goal:** Replace the featureless void with a Solar System context. A satellite in orbit around a textured Earth is immediately more legible as a real system than a model spinning in empty space.
 
----
+**Tasks:**
+- Add a textured Earth sphere using a NASA Blue Marble or equivalent public-domain texture via VTK texture mapping
+- Add a simplified Sun representation (distant directional light or emissive sphere) to establish the illumination axis
+- Set scene scale consistent with real orbital altitudes (LEO ~400 km above Earth radius 6371 km) — normalized but proportionally correct
+- Define an Earth-Centered Inertial (ECI) coordinate frame in the scene: X toward vernal equinox, Z toward north pole, axes visualized
+- Place the satellite actor at a static orbital position above Earth as a placeholder
 
-# 📅 Month 1 – Architecture & Mathematical Core
+**Deliverables:**
+- Earth sphere rendered with texture in the scene
+- Satellite positioned at a fixed orbital altitude above Earth surface
+- ECI frame axes visible in the scene
+- Scene scale documented in README
 
-**Theme:** Build strong foundations
-**Focus:** Clean structure, math correctness, API thinking
-**Outcome:** A clean, modular project with a working math + telemetry core
-
----
-
-## Week 1 – Project Restructure & Boundaries
-
-### Goals
-
-* Refactor MVP into clear modules
-* Separate UI, visualization, and core logic
-* Introduce modern C++ ownership semantics
-
-### Tasks
-
-* Create folder structure:
-
-```
-/src
-  /core
-  /math
-  /simulation
-  /visualization
-  /ui
-/tests
-```
-
-* Ensure:
-
-  * No Qt in `/core`
-  * No VTK in `/math`
-  * Core has no UI dependency
-* Replace raw pointers with:
-
-  * `std::unique_ptr`
-  * `std::shared_ptr` (only if needed)
-* Add `const` correctness where missing
-
-### Deliverables
-
-* Clean build
-* Clear module boundaries
-* Updated README architecture section
+**Stretch:**
+- Add a starfield background (VTK skybox or point cloud)
+- Add atmospheric scattering approximation (gradient halo around Earth limb)
+- Camera presets: zoom to Earth, zoom to satellite
 
 ---
 
-## Week 2 – Implement Math Module
+## Phase 5 — Orbital Mechanics: SGP4 Propagation and Real Satellites
 
-### Goals
+**Goal:** Pull real satellite orbital data from Celestrak (TLE format) and propagate positions using the industry-standard SGP4 model. The satellite now moves in a physically correct orbit around the Earth scene.
 
-Build a small but solid math foundation.
+**Tasks:**
+- Integrate `libsgp4` (Vallado's C++ implementation, MIT-licensed) via CMake `FetchContent` or system package
+- Implement a TLE parser: load a two-line element set, extract epoch and Keplerian elements
+- Wire SGP4 propagation to a time input: given a `std::chrono::system_clock::time_point`, compute ECI position and velocity
+- Define `struct OrbitalState { TimePoint epoch; Vector3 position_eci; Vector3 velocity_eci; }` in `core/`
+- Position the satellite actor in the scene using the propagated ECI coordinates mapped to scene scale
+- Test with at least one real satellite (e.g., ISS NORAD ID 25544) fetched from Celestrak
 
-### Implement
+**Deliverables:**
+- Satellite tracks a real TLE-derived orbit around the Earth scene
+- `OrbitalState` defined in `core/` and consumed by both rendering and simulation layers
+- Propagation verified against known reference positions
 
-* `Vector3`
-
-  * Addition, subtraction
-  * Scalar multiplication
-  * Dot product
-  * Cross product
-  * Norm / normalization
-
-* `Quaternion`
-
-  * Constructors
-  * Normalize
-  * Multiplication
-  * Conjugate
-  * Rotate vector
-  * Convert to rotation matrix
-
-### Stretch
-
-* Implement SLERP
-
-### Rules
-
-* No dynamic allocation
-* Value semantics only
-* Use `constexpr` where appropriate
-* Add `explicit` constructors
-
-### Deliverables
-
-* `math` module independent of UI
-* Unit tests for vector + quaternion
-* README: Math design notes
+**Stretch:**
+- Fetch TLE data live from Celestrak API at startup
+- Visualize the full orbital path as a 3D ellipse in the scene
+- Render a 2D ground track projected onto a map panel
 
 ---
 
-## Week 3 – Telemetry Engine (API Design Practice)
+## Phase 6 — Telemetry Engine: Attitude Data with Interpolation
 
-### Goals
+**Goal:** Layer attitude telemetry on top of orbital position. The satellite now has both a correct orbital position (from SGP4) and an attitude (from telemetry), driving a complete state representation.
 
-Move from “file reader” to “telemetry system”.
+**Tasks:**
+- Define `struct SatelliteState { TimePoint timestamp; Vector3 position_eci; Quaternion attitude; }` in `core/`
+- Implement `TelemetryEngine`:
+  - `bool load_from_csv(const std::string& path)` — parse timestamped attitude records
+  - `std::optional<SatelliteState> state_at(TimePoint t) const` — interpolated query
+- Store records ordered by timestamp; use binary search for O(log n) lookup
+- Implement SLERP interpolation for quaternion attitude between samples (from Phase 3 math module)
+- Use `std::chrono` for all time representation; `std::optional` for safe miss-handling
+- Write unit tests: interpolation at boundary, beyond-range query, malformed CSV
 
-### Design
+**Deliverables:**
+- `TelemetryEngine` class in `core/src/`
+- CSV-driven attitude playback overlaid on orbital position
+- Unit tests covering interpolation edge cases
 
-Create:
-
-```cpp
-struct SatelliteState {
-    TimePoint timestamp;
-    Vector3 position;
-    Quaternion attitude;
-};
-```
-
-Create:
-
-```cpp
-class TelemetryEngine {
-public:
-    bool load_from_csv(const std::string& path);
-    std::optional<SatelliteState> state_at(TimePoint t) const;
-};
-```
-
-### Features
-
-* Store telemetry ordered by timestamp
-* Support interpolation between samples
-* Use `std::chrono` for time
-* Use `std::optional` for safe querying
-
-### Deliverables
-
-* Clean API
-* Interpolation working
-* Unit tests for interpolation edge cases
+**Stretch:**
+- Support JSON telemetry format in addition to CSV
+- Flag samples with quaternion norm deviation > epsilon
 
 ---
 
-## Week 4 – Integration Layer
+## Phase 7 — Concurrency: Background Pipeline
 
-### Goals
+**Goal:** Move telemetry production and time advancement off the UI thread. The UI remains responsive at all times; data flows through a producer-consumer pipeline.
 
-Connect telemetry engine to visualization.
+**Tasks:**
+- Create a dedicated telemetry/simulation thread using `std::jthread` (C++20) with cooperative cancellation via `std::stop_token`
+- Implement a thread-safe state queue: producer posts `SatelliteState`, consumer (UI thread) reads latest
+- Use `std::mutex` + `std::condition_variable` for synchronization; `std::lock_guard` / `std::unique_lock` — no manual unlock
+- Ensure clean shutdown: thread exits before any owned resources are destroyed (RAII lifecycle)
+- No global variables; shared ownership documented explicitly
 
-### Tasks
+**Deliverables:**
+- Telemetry thread runs independently of the render loop
+- UI thread never blocks on telemetry computation
+- No data races (verify with `-fsanitize=thread`)
+- README: threading model diagram
 
-* Replace direct CSV playback with `TelemetryEngine`
-* Update satellite orientation via quaternion
-* Ensure clean separation:
-
-  * Visualization consumes state
-  * Core produces state
-
-### Deliverables
-
-* Playback working with new architecture
-* Code review pass (self-review for clarity)
-* README: Architecture diagram
-
----
-
-# 📅 Month 2 – Concurrency, Simulation & System Thinking
-
-**Theme:** Move toward real engineering
-**Focus:** Threading, simulation logic, design clarity
-**Outcome:** Concurrent telemetry pipeline + simulation engine
+**Stretch:**
+- Implement a lock-free single-producer / single-consumer ring buffer as a learning exercise and benchmarking comparison
 
 ---
 
-## Week 5 – Introduction to Multithreading
+## Phase 8 — Simulation Engine: Attitude Dynamics
 
-### Goals
+**Goal:** Add a physics-based simulation mode that propagates attitude using angular velocity integration. The application can run in two modes: replay recorded telemetry, or simulate attitude dynamics in real time.
 
-Add a simple background worker.
+**Tasks:**
+- Implement quaternion attitude propagation: `q_dot = 0.5 * q ⊗ [0, ω]`, integrated with a fixed timestep
+- Normalize quaternion periodically to prevent drift
+- Expose a `SimulatedMode` vs `TelemetryMode` toggle in the UI
+- In simulated mode, angular velocity is configurable via UI controls
+- Unit tests for propagation: known angular velocity → verify quaternion after N steps matches analytical result
 
-### Implement
+**Deliverables:**
+- `AttitudeSimulator` class in `simulation/src/`
+- Both modes selectable and working at runtime
+- Propagation unit tests pass
 
-* Create a telemetry playback thread
-* Use:
-
-  * `std::thread`
-  * `std::mutex`
-  * `std::lock_guard`
-
-Architecture:
-
-```
-Telemetry Thread → Shared State → UI Thread
-```
-
-### Rules
-
-* No global variables
-* Clearly document shared ownership
-* Use RAII for thread lifecycle
-
-### Deliverables
-
-* Threaded playback
-* Clean shutdown
-* README: Threading model explanation
+**Stretch:**
+- Inject configurable Gaussian noise to simulate sensor drift
+- Show error comparison overlay: simulated vs telemetry attitude deviation displayed as an angle
 
 ---
 
-## Week 6 – Improve Threading Design
+## Phase 9 — Time Controls: Playback and Ring Buffer
 
-### Goals
+**Goal:** Give the user full control over time. Playback speed, pause, step, and real-time live simulation all operate correctly.
 
-Make threading safer and more structured.
+**Tasks:**
+- Implement time scaling: 0.1x, 0.5x, 1x, 2x, 10x playback speed
+- Implement pause and resume without state loss
+- Implement single-frame step (forward and backward)
+- Add a ring buffer for live simulation output: fixed-capacity circular storage with overwrite-oldest policy
+- Display a timeline scrubber or elapsed-time indicator in the UI
 
-### Refactor to:
+**Deliverables:**
+- All time controls functional in both telemetry and simulated modes
+- Ring buffer implementation in `core/src/RingBuffer.h` (template, header-only)
+- Smooth playback across speed changes without visual stuttering
 
-* `std::jthread` (if C++20)
-* Add:
-
-  * `std::condition_variable`
-  * Producer-consumer model
-
-Optional:
-
-* Implement simple thread-safe queue
-
-### Deliverables
-
-* Stable concurrent pipeline
-* No data races (test heavily)
-* README: Concurrency design notes
+**Stretch:**
+- Benchmark ring buffer throughput vs `std::deque` baseline and document results
 
 ---
 
-## Week 7 – Attitude Simulation Engine
+## Phase 10 — Testing and CI
 
-### Goals
+**Goal:** Establish automated testing as a first-class project artifact. Every push is verified.
 
-Add real math-based simulation.
+**Tasks:**
+- Integrate GoogleTest or Catch2 via CMake `FetchContent`
+- Write or migrate tests for: quaternion math, vector math, interpolation boundaries, telemetry parsing errors, ring buffer wrap-around, thread safety scenarios
+- Set up GitHub Actions workflow: build on ubuntu-latest, run test suite, report results
+- Enforce that `cmake --build` + `ctest` passes before merging to `main`
 
-### Implement
+**Deliverables:**
+- `tests/` populated with structured test files per module
+- CI badge in `README.md`
+- All tests green on push
 
-Basic rigid-body propagation:
-
-* Angular velocity integration
-* Quaternion update:
-
-```
-q_dot = 0.5 * q ⊗ omega
-```
-
-* Normalize periodically
-
-Optional:
-
-* Add noise injection
-* Simulate sensor drift
-
-### Deliverables
-
-* Simulated mode vs telemetry mode
-* Toggle in UI
-* Unit tests for propagation
+**Stretch:**
+- Add code coverage reporting (gcov + lcov) to the CI pipeline
 
 ---
 
-## Week 8 – Time-Series Enhancements
+## Phase 11 — Logging and Configuration
 
-### Goals
+**Goal:** Make the application behave like real software: structured logs, externally configurable behavior, no hardcoded paths.
 
-Improve data handling maturity.
+**Tasks:**
+- Integrate `spdlog` for structured logging: info, debug, warn, error levels; file sink + console sink
+- Define a JSON configuration file (`config.json`) for: model path, initial TLE source, playback speed, simulation parameters
+- Parse config at startup using `nlohmann/json` (header-only, via `FetchContent`)
+- Remove all hardcoded paths from source; derive everything from config or application directory
 
-### Add
+**Deliverables:**
+- Application fully config-driven at startup
+- Structured logs written to file per session
+- `config.json` with documented fields committed to repo
 
-* Ring buffer for live simulation
-* Time scaling (2x, 0.5x)
-* Pause/resume
-* Step frame
-
-Optional:
-
-* Error comparison between simulated & real telemetry
-
-### Deliverables
-
-* Smooth playback
-* Improved performance
-* Basic profiling using `std::chrono`
+**Stretch:**
+- Live config reload: watch `config.json` for changes and apply without restart
 
 ---
 
-# 📅 Month 3 – Professional Polish & Engineering Depth
+## Phase 12 — Performance and Memory Discipline
 
-**Theme:** Make it portfolio-grade
-**Focus:** Testing, performance, documentation, realism
-**Outcome:** A resume-worthy engineering tool
+**Goal:** Demonstrate systems-level thinking about data layout, copy elision, and profiling.
 
----
+**Tasks:**
+- Audit all hot-path data structures for unnecessary copies; apply move semantics where copies are avoidable
+- Review telemetry storage layout: evaluate struct-of-arrays vs array-of-structs for interpolation access pattern
+- Profile the render loop with `std::chrono` timing points; identify and address frame-time spikes
+- Review all `std::shared_ptr` usage; replace with `std::unique_ptr` where ownership is not genuinely shared
 
-## Week 9 – Testing Discipline
+**Deliverables:**
+- README section documenting profiling methodology, findings, and changes made
+- No regressions in test suite after optimization passes
 
-### Goals
-
-Increase credibility.
-
-### Add tests for:
-
-* Quaternion edge cases
-* Interpolation boundaries
-* Telemetry parsing errors
-* Thread safety scenarios
-
-Integrate:
-
-* GoogleTest or Catch2
-* GitHub Actions CI
-
-### Deliverables
-
-* Automated test pipeline
-* Tests running on every push
+**Stretch:**
+- Implement struct-of-arrays layout for telemetry storage and benchmark against baseline
+- Add a frame-time histogram display in debug mode
 
 ---
 
-## Week 10 – Logging & Configuration
+## Phase 13 — Polish and Portfolio Positioning
 
-### Goals
+**Goal:** Turn a well-engineered codebase into a standout portfolio artifact.
 
-Make it feel like real software.
+**Tasks:**
+- Rewrite `README.md` with: architecture diagram, module dependency graph, threading model diagram, math design notes, design tradeoffs section
+- Record a short demo video (screen capture) showing: Earth scene, satellite in orbit, telemetry playback, simulated mode, time controls
+- Add a feature list and "what this demonstrates" section connecting implementation choices to C++ engineering competencies
+- Audit commit history for clarity; ensure commit messages describe intent not just mechanism
 
-### Add
+**Deliverables:**
+- `README.md` suitable for a hiring manager and a senior C++ engineer simultaneously
+- Demo video linked from README
+- Project presentable without a walkthrough
 
-* Logging system (e.g., spdlog)
-
-  * Log levels
-  * File output
-* JSON configuration file
-
-  * Model path
-  * Playback speed
-  * Simulation parameters
-
-### Deliverables
-
-* Config-driven startup
-* Structured logs
-* Updated README
+**Stretch:**
+- Publish a technical write-up explaining the quaternion math and threading design
+- Add ECI to ECEF frame conversion and visualize the ground track on a projected globe texture
 
 ---
 
-## Week 11 – Performance & Memory Awareness
+## Portfolio Signal
 
-### Goals
+| Competency | Evidence |
+|---|---|
+| Modern C++ (C++20) | `std::jthread`, `std::stop_token`, `constexpr`, move semantics, RAII throughout |
+| Mathematical reasoning | Custom quaternion/vector library, SLERP, attitude propagation |
+| Systems architecture | Enforced module boundaries, dependency inversion, no circular includes |
+| Concurrency | Producer-consumer pipeline, thread-safe queue, sanitizer-clean |
+| Data pipeline design | TLE ingestion → SGP4 → ECI position → telemetry overlay → render |
+| Orbital mechanics | SGP4 propagation, ECI frame, real satellite tracking from Celestrak |
+| Testing discipline | Unit tests per module, CI on every push, edge case coverage |
+| Performance awareness | Profiling, layout analysis, move semantics audit, documented tradeoffs |
 
-Demonstrate systems thinking.
-
-### Improve
-
-* Avoid unnecessary copies
-* Use move semantics intentionally
-* Profile telemetry parsing
-* Review memory ownership
-
-Optional:
-
-* Convert telemetry storage to struct-of-arrays layout
-
-### Deliverables
-
-* Document performance considerations
-* Add benchmark notes to README
-
----
-
-## Week 12 – Final Polish & Presentation
-
-### Goals
-
-Turn it into a standout portfolio piece.
-
-### Add
-
-* Clean README with:
-
-  * Architecture diagram
-  * Threading model diagram
-  * Math explanation
-  * Design tradeoffs
-* Screenshots / demo video
-* Feature list
-* Future roadmap section
-
-Optional:
-
-* Add ground track visualization
-* Add ECI/ECEF frame conversion
-
-### Final Outcome
-
-You now have:
-
-* Modular architecture
-* Custom math library
-* Telemetry engine
-* Concurrent pipeline
-* Simulation engine
-* Testing suite
-* CI integration
-* Logging & configuration
-* Professional documentation
-
----
-
-# 🏁 Final Portfolio Positioning
-
-This project demonstrates:
-
-* Modern C++ (C++17/20)
-* Concurrency
-* Mathematical reasoning
-* System design fundamentals
-* Data pipeline thinking
-* Performance awareness
-* Engineering discipline
-* Aerospace domain familiarity
-
-It positions you as:
-
-> A serious C++ engineer capable of building technical systems — not just UI features.
-
----
-
-# 📌 Optional README Section
-
-You may add:
-
-```
-## Learning Objectives
-
-This project was intentionally designed to deepen knowledge in:
-- System architecture
-- Multithreading in C++
-- Numerical stability in quaternion math
-- Time-series data handling
-- Modern C++ best practices
-```
-
----
-
-If you'd like next, I can:
-
-* Help you design the initial folder + CMake template
-* Draft a professional README
-* Or design a milestone-based GitHub issue breakdown for easier tracking
+> A serious C++ engineer capable of building technical systems in a domain where correctness is not optional.
