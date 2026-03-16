@@ -1,15 +1,11 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QLabel>
 #include <QMainWindow>
 #include <QSlider>
-#include <QVTKOpenGLNativeWidget.h>
-#include <vtkActor.h>
-#include <vtkGenericOpenGLRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
-class vtkOrientationMarkerWidget;
+#include <memory>
+
+class SceneManager;
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -33,11 +29,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QVTKOpenGLNativeWidget *vtkWidget;
-    vtkSmartPointer<vtkRenderer> renderer;
-    vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;
-    vtkSmartPointer<vtkOrientationMarkerWidget> orientationWidget;
-    vtkSmartPointer<vtkActor> satelliteActor;
+    std::unique_ptr<SceneManager> sceneManager;
 
     QSlider *rollSlider;
     QSlider *pitchSlider;
@@ -46,8 +38,6 @@ private:
     QLabel *pitchValueLabel;
     QLabel *yawValueLabel;
 
-    void setupVTK();
     void setupControlPanel();
-    void updateOrientation();
+    void applyOrientation();
 };
-#endif // MAINWINDOW_H

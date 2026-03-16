@@ -18,7 +18,20 @@ find_package(VTK REQUIRED)
 message(STATUS "VTK version: ${VTK_VERSION}")
 
 qt_add_executable(Spacecraft_Telemetry_Vizualizer MANUAL_FINALIZATION
-    main.cpp mainwindow.cpp mainwindow.h mainwindow.ui icons/icons.qrc
+    app/src/main.cpp
+    gui/src/MainWindow.cpp
+    gui/src/MainWindow.h
+    gui/src/MainWindow.ui
+    rendering/src/SceneManager.cpp
+    rendering/src/SceneManager.h
+    icons/icons.qrc
+)
+
+target_include_directories(Spacecraft_Telemetry_Vizualizer PRIVATE
+    gui/src
+    rendering/src
+    core/src
+    math/src
 )
 
 target_link_libraries(Spacecraft_Telemetry_Vizualizer PRIVATE
