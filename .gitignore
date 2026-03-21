@@ -11,6 +11,7 @@ compile_commands.json
 CTestTestfile.cmake
 _deps/
 Testing/
+install/*
 
 # Qt auto-generated files
 *.moc
@@ -54,6 +55,3 @@ Thumbs.db
 # Other
 CMakeLists.txt.user
 CMakeUserPresets.json
-
-# VS Code
-.vscode/

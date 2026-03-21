@@ -1,0 +1,14 @@
+{
+    "cmake.installPrefix": "${workspaceFolder}/install",
+    "cmake.environment": {
+        "LD_LIBRARY_PATH": "/home/andrzej/Qt/6.7.2/gcc_64/lib"
+    },
+    "cmake.debugConfig": {
+        "environment": [
+            {
+                "name": "LD_LIBRARY_PATH",
+                "value": "/home/andrzej/Qt/6.7.2/gcc_64/lib"
+            }
+        ]
+    }
+}

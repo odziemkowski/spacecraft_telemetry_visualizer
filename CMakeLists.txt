@@ -1,20 +1,34 @@
 cmake_minimum_required(VERSION 3.20)
-project(Spacecraft_Telemetry_Vizualizer VERSION 0.1 LANGUAGES CXX)
+project(Spacecraft_Telemetry_Vizualizer VERSION 0.1 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+#if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+#    set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "Default install prefix" FORCE)
+#endif()
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_PREFIX_PATH "/home/andrzej/Qt/6.10.0/gcc_64")
-#set(VTK_DIR "/home/andrzej/VTK/install/lib/cmake/vtk-9.5")
+set(CMAKE_PREFIX_PATH "/home/andrzej/Qt/6.7.2/gcc_64")
 
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets OpenGLWidgets)
-find_package(VTK REQUIRED)
+set(VTK_DIR "/home/andrzej/vtk-install/lib/cmake/vtk-9.4")
 
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
+find_package(VTK REQUIRED COMPONENTS
+    CommonCore
+    RenderingCore
+    RenderingOpenGL2
+    RenderingAnnotation
+    GUISupportQt
+    InteractionStyle
+    IOGeometry
+)
+
+message(STATUS "Qt version: ${Qt6_VERSION}")
 message(STATUS "VTK version: ${VTK_VERSION}")
 
 qt_add_executable(Spacecraft_Telemetry_Vizualizer MANUAL_FINALIZATION
@@ -35,15 +49,13 @@ target_include_directories(Spacecraft_Telemetry_Vizualizer PRIVATE
 )
 
 target_link_libraries(Spacecraft_Telemetry_Vizualizer PRIVATE
+    Qt6::Core
     Qt6::Widgets
     Qt6::OpenGLWidgets
     ${VTK_LIBRARIES}
 )
 
-set_target_properties(Spacecraft_Telemetry_Vizualizer PROPERTIES
-    BUILD_RPATH "/home/andrzej/Qt/6.10.0/gcc_64/lib"
-    INSTALL_RPATH "/home/andrzej/Qt/6.10.0/gcc_64/lib"
-)
+#set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 #vtk_module_autoinit(TARGETS Spacecraft_Telemetry_Vizualizer MODULES ${VTK_LIBRARIES})
 
@@ -53,3 +65,9 @@ add_custom_command(TARGET Spacecraft_Telemetry_Vizualizer POST_BUILD
 )
 
 qt_finalize_executable(Spacecraft_Telemetry_Vizualizer)
+
+install(TARGETS Spacecraft_Telemetry_Vizualizer
+    RUNTIME DESTINATION bin
+)
+
+install(DIRECTORY models/ DESTINATION bin/models)
