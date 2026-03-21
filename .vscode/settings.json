@@ -10,5 +10,8 @@
                 "value": "/home/andrzej/Qt/6.7.2/gcc_64/lib"
             }
         ]
-    }
+    },
+    "cmake.configureArgs": [
+        "-DCMAKE_INSTALL_PREFIX=${workspaceFolder}/build/install"
+    ]
 }

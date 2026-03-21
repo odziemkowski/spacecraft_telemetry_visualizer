@@ -31,7 +31,7 @@ find_package(VTK REQUIRED COMPONENTS
 message(STATUS "Qt version: ${Qt6_VERSION}")
 message(STATUS "VTK version: ${VTK_VERSION}")
 
-qt_add_executable(Spacecraft_Telemetry_Vizualizer MANUAL_FINALIZATION
+qt_add_executable(${PROJECT_NAME} MANUAL_FINALIZATION
     app/src/main.cpp
     gui/src/MainWindow.cpp
     gui/src/MainWindow.h
@@ -41,14 +41,14 @@ qt_add_executable(Spacecraft_Telemetry_Vizualizer MANUAL_FINALIZATION
     icons/icons.qrc
 )
 
-target_include_directories(Spacecraft_Telemetry_Vizualizer PRIVATE
+target_include_directories(${PROJECT_NAME} PRIVATE
     gui/src
     rendering/src
     core/src
     math/src
 )
 
-target_link_libraries(Spacecraft_Telemetry_Vizualizer PRIVATE
+target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Core
     Qt6::Widgets
     Qt6::OpenGLWidgets
@@ -57,16 +57,16 @@ target_link_libraries(Spacecraft_Telemetry_Vizualizer PRIVATE
 
 #set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-#vtk_module_autoinit(TARGETS Spacecraft_Telemetry_Vizualizer MODULES ${VTK_LIBRARIES})
+#vtk_module_autoinit(TARGETS ${PROJECT_NAME} MODULES ${VTK_LIBRARIES})
 
-add_custom_command(TARGET Spacecraft_Telemetry_Vizualizer POST_BUILD
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_SOURCE_DIR}/models" "${CMAKE_BINARY_DIR}/models"
 )
 
-qt_finalize_executable(Spacecraft_Telemetry_Vizualizer)
+qt_finalize_executable(${PROJECT_NAME})
 
-install(TARGETS Spacecraft_Telemetry_Vizualizer
+install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION bin
 )
 
