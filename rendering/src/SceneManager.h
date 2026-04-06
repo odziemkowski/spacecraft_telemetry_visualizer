@@ -1,13 +1,9 @@
 #pragma once
 
-#include <vtkActor.h>
-#include <vtkGenericOpenGLRenderWindow.h>
-#include <vtkOrientationMarkerWidget.h>
-#include <vtkRenderer.h>
-#include <vtkSmartPointer.h>
+#include <QString>
 
 class QWidget;
-class QVTKOpenGLNativeWidget;
+class GLViewport;
 
 class SceneManager
 {
@@ -19,9 +15,5 @@ public:
     QWidget *widget();
 
 private:
-    QVTKOpenGLNativeWidget *vtkWidget;
-    vtkSmartPointer<vtkRenderer> renderer;
-    vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;
-    vtkSmartPointer<vtkOrientationMarkerWidget> orientationWidget;
-    vtkSmartPointer<vtkActor> satelliteActor;
+    GLViewport *m_viewport;
 };

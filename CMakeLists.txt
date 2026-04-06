@@ -15,21 +15,9 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_PREFIX_PATH "/home/andrzej/Qt/6.7.2/gcc_64")
 
-set(VTK_DIR "/home/andrzej/vtk-install/lib/cmake/vtk-9.4")
-
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
-find_package(VTK REQUIRED COMPONENTS
-    CommonCore
-    RenderingCore
-    RenderingOpenGL2
-    RenderingAnnotation
-    GUISupportQt
-    InteractionStyle
-    IOGeometry
-)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets OpenGLWidgets)
 
 message(STATUS "Qt version: ${Qt6_VERSION}")
-message(STATUS "VTK version: ${VTK_VERSION}")
 
 qt_add_executable(${PROJECT_NAME} MANUAL_FINALIZATION
     app/src/main.cpp
@@ -38,6 +26,14 @@ qt_add_executable(${PROJECT_NAME} MANUAL_FINALIZATION
     gui/src/MainWindow.ui
     rendering/src/SceneManager.cpp
     rendering/src/SceneManager.h
+    rendering/src/GLViewport.cpp
+    rendering/src/GLViewport.h
+    rendering/src/Geometry.cpp
+    rendering/src/Geometry.h
+    rendering/src/OrbitCamera.cpp
+    rendering/src/OrbitCamera.h
+    rendering/src/ObjLoader.cpp
+    rendering/src/ObjLoader.h
     icons/icons.qrc
 )
 
@@ -46,22 +42,20 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     rendering/src
     core/src
     math/src
+    third_party/tinyobjloader
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Core
     Qt6::Widgets
     Qt6::OpenGLWidgets
-    ${VTK_LIBRARIES}
 )
-
-#set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
-#vtk_module_autoinit(TARGETS ${PROJECT_NAME} MODULES ${VTK_LIBRARIES})
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_SOURCE_DIR}/models" "${CMAKE_BINARY_DIR}/models"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/textures" "${CMAKE_BINARY_DIR}/textures"
 )
 
 qt_finalize_executable(${PROJECT_NAME})
@@ -71,3 +65,4 @@ install(TARGETS ${PROJECT_NAME}
 )
 
 install(DIRECTORY models/ DESTINATION bin/models)
+install(DIRECTORY textures/ DESTINATION bin/textures)

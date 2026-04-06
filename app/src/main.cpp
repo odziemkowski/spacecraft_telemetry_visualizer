@@ -6,8 +6,11 @@
 
 int main(int argc, char *argv[])
 {
-    // Disable multisampling in Qt BEFORE QApplication
+    // Request OpenGL 3.3 Core Profile BEFORE QApplication
     QSurfaceFormat fmt;
+    fmt.setVersion(3, 3);
+    fmt.setProfile(QSurfaceFormat::CoreProfile);
+    fmt.setDepthBufferSize(24);
     fmt.setSamples(0);
     QSurfaceFormat::setDefaultFormat(fmt);
 
