@@ -55,3 +55,4 @@ Thumbs.db
 # Other
 CMakeLists.txt.user
 CMakeUserPresets.json
+.misc/
