@@ -18,6 +18,7 @@ public:
 
     void setDistance(float d);
     float distance() const { return m_distance; }
+    float farClip() const { return m_farClip; }
 
 private:
     float m_distance = 3.0f;

@@ -25,10 +25,12 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 uniform mat3 normalMatrix;
+uniform float u_far;
 
 out vec3 fragNormal;
 out vec3 fragPos;
 out vec2 texCoord;
+out float flogz;
 
 void main()
 {
@@ -37,6 +39,8 @@ void main()
     fragNormal = normalMatrix * aNormal;
     texCoord = aTexCoord;
     gl_Position = projection * view * worldPos;
+    flogz = 1.0 + gl_Position.w;
+    gl_Position.z = (log2(max(1e-6, flogz)) * (2.0 / log2(u_far + 1.0)) - 1.0) * gl_Position.w;
 }
 )";
 
@@ -45,6 +49,7 @@ static const char *kLitFragmentShader = R"(
 in vec3 fragNormal;
 in vec3 fragPos;
 in vec2 texCoord;
+in float flogz;
 
 uniform vec3 lightDir;
 uniform vec3 lightColor;
@@ -52,6 +57,7 @@ uniform vec3 ambientColor;
 uniform vec3 materialColor;
 uniform bool hasTexture;
 uniform sampler2D textureSampler;
+uniform float u_far;
 
 out vec4 fragColorOut;
 
@@ -62,6 +68,7 @@ void main()
     vec3 baseColor = hasTexture ? texture(textureSampler, texCoord).rgb : materialColor;
     vec3 result = (ambientColor + diff * lightColor) * baseColor;
     fragColorOut = vec4(result, 1.0);
+    gl_FragDepth = log2(max(1e-6, flogz)) / log2(u_far + 1.0);
 }
 )";
 
@@ -74,22 +81,31 @@ static const char *kUnlitVertexShader = R"(
 layout(location = 0) in vec3 aPos;
 
 uniform mat4 mvp;
+uniform float u_far;
+
+out float flogz;
 
 void main()
 {
     gl_Position = mvp * vec4(aPos, 1.0);
+    flogz = 1.0 + gl_Position.w;
+    gl_Position.z = (log2(max(1e-6, flogz)) * (2.0 / log2(u_far + 1.0)) - 1.0) * gl_Position.w;
 }
 )";
 
 static const char *kUnlitFragmentShader = R"(
 #version 330 core
+in float flogz;
+
 uniform vec3 color;
+uniform float u_far;
 
 out vec4 fragColorOut;
 
 void main()
 {
     fragColorOut = vec4(color, 1.0);
+    gl_FragDepth = log2(max(1e-6, flogz)) / log2(u_far + 1.0);
 }
 )";
 
@@ -188,6 +204,7 @@ void GLViewport::paintGL()
         m_litShader->setUniformValue("view", view);
         m_litShader->setUniformValue("projection", projection);
         m_litShader->setUniformValue("normalMatrix", model.normalMatrix());
+        m_litShader->setUniformValue("u_far", m_camera.farClip());
 
         // Sun light direction (matches VTK scene)
         m_litShader->setUniformValue("lightDir", QVector3D(1.0f, 0.3f, 0.2f).normalized());
@@ -229,6 +246,7 @@ void GLViewport::paintGL()
         m_unlitShader->bind();
         QMatrix4x4 mvp = projection * view;
         m_unlitShader->setUniformValue("mvp", mvp);
+        m_unlitShader->setUniformValue("u_far", m_camera.farClip());
 
         m_axesVAO.bind();
         glLineWidth(2.0f);
@@ -485,6 +503,7 @@ void GLViewport::drawOrientationMarker(const QMatrix4x4 &view)
     glLineWidth(2.0f);
     QMatrix4x4 mvp = ortho * rotOnly;
     m_unlitShader->setUniformValue("mvp", mvp);
+    m_unlitShader->setUniformValue("u_far", m_camera.farClip());
 
     m_unlitShader->setUniformValue("color", QVector3D(1.0f, 0.2f, 0.2f));
     glDrawArrays(GL_LINES, 0, 2);

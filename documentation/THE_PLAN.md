@@ -107,7 +107,7 @@ The standard OpenGL depth buffer is 24-bit linear — it gives usable precision 
 
 **Tasks:**
 - **Rendering infrastructure:**
-  - Implement logarithmic depth buffer in vertex + fragment shaders
+  - ✅ Implement logarithmic depth buffer in vertex + fragment shaders
   - Refactor matrix pipeline to use double-precision computation on CPU, camera-relative float output to GPU
   - Verify: no z-fighting across the full Earth-to-Moon distance range
 - **Scene content:**
